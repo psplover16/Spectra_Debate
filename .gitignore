@@ -1,0 +1,18 @@
+.spectra/
+openspec/.vector-search.db*
+
+# Node / Vitest / OS
+node_modules/
+.vitest/
+coverage/
+*.log
+.env
+.env.local
+.DS_Store
+Thumbs.db
+
+# 個人筆記與 done 受限資料夾（CLAUDE.md 規範：除非明確要求否則忽略）
+_private/
+
+# 暫存檔（apply 階段 spectra new artifact 用過的 staging）
+_tmp_*.md

@@ -1,0 +1,289 @@
+/* Spectra-Debate styles — design.md 「訊息排版 5b 格式 3 / 立場色系 / 失敗卡」 */
+
+:root {
+  --pro-hue: 210;
+  --con-hue: 0;
+  --bg: #f7f7f9;
+  --fg: #1f2330;
+  --muted: #6b7280;
+  --card-radius: 10px;
+  --card-padding: 14px 16px;
+  --gap: 14px;
+  --max-width: 760px;
+  --safe-top: env(safe-area-inset-top, 0px);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family:
+    system-ui, -apple-system, 'Segoe UI', 'PingFang TC', 'Microsoft JhengHei UI',
+    'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.55;
+}
+
+.app-root {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: calc(24px + var(--safe-top)) 16px 32px;
+}
+
+.app-root__loading {
+  text-align: center;
+  color: var(--muted);
+}
+
+/* ---- Setup popup ---- */
+
+.setup-popup {
+  background: white;
+  border-radius: var(--card-radius);
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+.setup-popup__title {
+  margin: 0 0 18px;
+  font-size: 22px;
+}
+.setup-form__row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.setup-form__label {
+  font-size: 14px;
+  color: var(--muted);
+}
+.setup-form__row input,
+.setup-form__row select {
+  padding: 8px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font: inherit;
+  background: white;
+}
+.setup-form__hint {
+  min-height: 1.4em;
+  margin: 4px 0 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.setup-form__hint--error {
+  color: #b91c1c;
+}
+.setup-form__submit {
+  width: 100%;
+  padding: 12px 16px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.setup-form__submit:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* ---- Running header ---- */
+
+.debate-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  padding: 12px 16px;
+  border-radius: var(--card-radius);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  margin-bottom: var(--gap);
+  position: sticky;
+  top: var(--safe-top);
+  z-index: 5;
+}
+.debate-header__status {
+  font-size: 14px;
+  color: var(--muted);
+}
+.debate-header__terminate {
+  padding: 8px 14px;
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+}
+.debate-header__terminate:hover {
+  background: #b91c1c;
+}
+
+/* ---- Timeline ---- */
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.turn-card {
+  background: white;
+  border-radius: var(--card-radius);
+  padding: var(--card-padding);
+  border: 1px solid #e5e7eb;
+  border-left-width: 4px;
+}
+.turn-card__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.turn-card__chip {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+}
+.turn-card__time {
+  font-size: 12px;
+  color: var(--muted);
+}
+.turn-card__content {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.turn-card--pro {
+  border-left-color: hsl(var(--pro-hue) 75% 50%);
+}
+.turn-card--pro .turn-card__chip {
+  background: hsl(var(--pro-hue) 75% 45%);
+}
+
+.turn-card--con {
+  border-left-color: hsl(var(--con-hue) 70% 50%);
+}
+.turn-card--con .turn-card__chip {
+  background: hsl(var(--con-hue) 70% 45%);
+}
+
+.turn-card--streaming::after {
+  content: '▎';
+  display: inline-block;
+  margin-left: 2px;
+  animation: blink 1.1s steps(1) infinite;
+  color: var(--muted);
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.turn-card--failed {
+  background: #f3f4f6;
+  border-left-color: #9ca3af;
+  color: var(--muted);
+}
+.turn-card--failed .turn-card__chip {
+  background: #6b7280;
+}
+
+.turn-card--closing {
+  border-left-style: double;
+  border-left-width: 6px;
+}
+
+/* ---- Ended screen ---- */
+
+.ended-screen {
+  background: white;
+  border-radius: var(--card-radius);
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  margin-bottom: var(--gap);
+}
+.ended-screen__notice {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.ended-screen__notice--interrupted {
+  color: #b45309;
+}
+.ended-screen__actions {
+  display: flex;
+  gap: 8px;
+}
+.ended-screen__action {
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+}
+.ended-screen__action--primary {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+/* ---- Restart confirm dialog ---- */
+
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 17, 24, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 100;
+}
+.confirm-dialog {
+  background: white;
+  border-radius: var(--card-radius);
+  padding: 22px 24px;
+  max-width: 460px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+.confirm-dialog__message {
+  margin: 0 0 18px;
+  line-height: 1.6;
+}
+.confirm-dialog__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.confirm-dialog__btn {
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+  text-align: center;
+}
+.confirm-dialog__btn--primary {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+.confirm-dialog__btn--ghost {
+  color: var(--muted);
+}

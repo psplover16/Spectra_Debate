@@ -1,0 +1,19 @@
+{
+  "name": "spectra-debate",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "AI 雙人辯論觀賞型網頁（Spectra-Debate） — codex 與 claude 兩個本地 CLI 輪流辯論",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node bridge.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.0",
+    "jsdom": "^25.0.0"
+  }
+}
