@@ -57,12 +57,24 @@ describe('Turn Order Is Determined by First Speaker Selection — Last Two Turns
     expect(kinds.slice(10)).toEqual(['closing', 'closing']);
   });
 
-  it('throws on invalid perSideCount (outside 2~5)', () => {
+  it('throws on invalid perSideCount (outside 2~999)', () => {
     expect(() =>
       buildTurnPlan({ firstSpeakerStance: 'pro', perSideCount: 1, proSide: 'codex', conSide: 'claude' })
     ).toThrow();
     expect(() =>
-      buildTurnPlan({ firstSpeakerStance: 'pro', perSideCount: 6, proSide: 'codex', conSide: 'claude' })
+      buildTurnPlan({ firstSpeakerStance: 'pro', perSideCount: 1000, proSide: 'codex', conSide: 'claude' })
     ).toThrow();
+  });
+
+  it('perSideCount 999 is valid and produces 2000-turn plan', () => {
+    const plan = buildTurnPlan({
+      firstSpeakerStance: 'pro',
+      perSideCount: 999,
+      proSide: 'codex',
+      conSide: 'claude',
+    });
+    expect(plan).toHaveLength(999 * 2 + 2);
+    expect(plan[0].kind).toBe('debate');
+    expect(plan[plan.length - 1].kind).toBe('closing');
   });
 });

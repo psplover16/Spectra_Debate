@@ -58,14 +58,16 @@ export function createInitialDebateState(input) {
   assertEnum(input.proSide, CLI_NAMES, 'proSide');
   assertEnum(input.firstSpeakerStance, STANCES, 'firstSpeakerStance');
   assertEnum(input.effortLevel, EFFORT_LEVELS, 'effortLevel');
-  if (!Number.isInteger(input.perSideCount) || input.perSideCount < 2 || input.perSideCount > 5) {
-    throw new Error(`perSideCount must be integer 2~5, got: ${input.perSideCount}`);
+  if (!Number.isInteger(input.perSideCount) || input.perSideCount < 2 || input.perSideCount > 999) {
+    throw new Error(`perSideCount must be integer 2~999, got: ${input.perSideCount}`);
   }
   const conSide = input.proSide === 'codex' ? 'claude' : 'codex';
   return {
     topic: input.topic,
     proSide: input.proSide,
     conSide,
+    proPersona: input.proPersona ?? '',
+    conPersona: input.conPersona ?? '',
     perSideCount: input.perSideCount,
     firstSpeakerStance: input.firstSpeakerStance,
     effortLevel: input.effortLevel,

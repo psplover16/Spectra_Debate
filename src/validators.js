@@ -8,7 +8,7 @@ import { CLI_NAMES, STANCES, EFFORT_LEVELS } from './state.js';
 export const TOPIC_MIN = 4;
 export const TOPIC_MAX = 100;
 export const PER_SIDE_MIN = 2;
-export const PER_SIDE_MAX = 5;
+export const PER_SIDE_MAX = 999;
 
 function ok() {
   return { valid: true, message: '' };

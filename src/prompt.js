@@ -68,23 +68,28 @@ function renderHistoryBlock(history) {
  * @param {number} input.turnIndex 1-based
  * @param {number} input.totalTurns
  * @param {'debate'|'closing'} input.kind
+ * @param {string} [input.persona] 當前方的 AI 身分，空字串或省略表示不指定
  * @param {Array<{index:number, cli:string, stance:'pro'|'con', status:string, content?:string, errorMessage?:string}>} input.history
  *   完成的 prior turns（不含當前 turn）
  * @returns {string}
  */
 export function buildPrompt(input) {
-  const { topic, stance, turnIndex, totalTurns, kind, history } = input;
+  const { topic, stance, turnIndex, totalTurns, kind, history, persona } = input;
   const stanceLabel = STANCE_LABEL[stance];
   const kindLabel = KIND_LABEL[kind];
 
-  const header = [
+  const headerLines = [
     '你正在參與一場辯論。',
     '',
     `辯題：${topic}`,
     `你的立場：${stanceLabel}`,
+  ];
+  if (persona) headerLines.push(`你的身分：${persona}`);
+  headerLines.push(
     `這是第 ${turnIndex} 個 turn（共 ${totalTurns} 個，含結辯）`,
     `本回合性質：${kindLabel}`,
-  ].join('\n');
+  );
+  const header = headerLines.join('\n');
 
   const historyBlock = renderHistoryBlock(history);
   const instructions = kind === 'closing' ? CLOSING_INSTRUCTIONS : MAIN_DEBATE_INSTRUCTIONS;

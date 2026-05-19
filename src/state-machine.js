@@ -119,6 +119,7 @@ export function createDebateController(state, deps) {
       state.turns.push(turn);
       deps.onTurnStart && deps.onTurnStart(turn);
 
+      const persona = turn.stance === 'pro' ? state.proPersona : state.conPersona;
       const prompt = buildPrompt({
         topic: state.topic,
         stance: turn.stance,
@@ -126,6 +127,7 @@ export function createDebateController(state, deps) {
         turnIndex: turn.index,
         totalTurns,
         kind: turn.kind,
+        persona,
         history: state.turns.slice(0, i),
       });
 

@@ -9,7 +9,7 @@
 import { STANCES, CLI_NAMES } from './state.js';
 
 const PER_SIDE_MIN = 2;
-const PER_SIDE_MAX = 5;
+const PER_SIDE_MAX = 999;
 const CLOSING_COUNT = 2;
 
 function otherStance(stance) {

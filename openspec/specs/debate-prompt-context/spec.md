@@ -52,6 +52,21 @@ The bridge SHALL use a closing prompt variant for turns with `kind` equal to `cl
 - **AND** contains an explicit prohibition against introducing new lines of argument
 
 ---
+### Requirement: Persona Declaration Injected Into Prompt Header When Assigned
+
+When a non-empty persona is assigned to a side, the bridge SHALL include a persona declaration line in the prompt header for every turn belonging to that side. The declaration SHALL appear after the stance line and before the turn index line. When the persona is empty, the line SHALL be omitted entirely.
+
+#### Scenario: Persona present in pro-side prompt
+
+- **WHEN** a pro-side turn's prompt is constructed and the pro persona is "Junior 前端工程師"
+- **THEN** the prompt header contains the literal string "Junior 前端工程師" in a persona declaration line
+
+#### Scenario: No persona — declaration line absent
+
+- **WHEN** a turn's prompt is constructed and the corresponding side's persona is empty string
+- **THEN** the prompt header does NOT contain any persona declaration line
+
+---
 ### Requirement: Prompt Header Identifies Topic, Stance, Turn Index, Total Turn Count, and Kind
 
 Every prompt SHALL begin with header lines naming the debate topic, the CLI's assigned stance for the current turn, the 1-based current turn index, the total turn count for the debate, and the turn kind label.

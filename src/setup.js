@@ -19,6 +19,8 @@ function readForm(root) {
   return {
     topic: root.querySelector('[data-field="topic"]').value,
     proSide: root.querySelector('[data-field="proSide"]').value,
+    proPersona: root.querySelector('[data-field="proPersona"]').value,
+    conPersona: root.querySelector('[data-field="conPersona"]').value,
     perSideCount: Number(root.querySelector('[data-field="perSideCount"]').value),
     firstSpeakerStance: root.querySelector('[data-field="firstSpeakerStance"]').value,
     effortLevel: root.querySelector('[data-field="effortLevel"]').value,
@@ -60,6 +62,16 @@ export function renderSetupPopup(root, { onConfirm }) {
         </label>
 
         <label class="setup-form__row">
+          <span class="setup-form__label">正方身分（選填）</span>
+          <input data-field="proPersona" type="text" placeholder="例如：Junior 前端工程師" />
+        </label>
+
+        <label class="setup-form__row">
+          <span class="setup-form__label">反方身分（選填）</span>
+          <input data-field="conPersona" type="text" placeholder="例如：高中生" />
+        </label>
+
+        <label class="setup-form__row">
           <span class="setup-form__label">每方發言次數（${PER_SIDE_MIN}~${PER_SIDE_MAX}）</span>
           <input data-field="perSideCount" type="number" min="${PER_SIDE_MIN}" max="${PER_SIDE_MAX}" step="1" />
         </label>
@@ -93,12 +105,14 @@ export function renderSetupPopup(root, { onConfirm }) {
   // 套用初始值
   root.querySelector('[data-field="topic"]').value = initial.topic ?? '';
   root.querySelector('[data-field="proSide"]').value = initial.proSide ?? DEFAULTS.proSide;
+  root.querySelector('[data-field="proPersona"]').value = initial.proPersona ?? '';
+  root.querySelector('[data-field="conPersona"]').value = initial.conPersona ?? '';
   root.querySelector('[data-field="perSideCount"]').value = String(initial.perSideCount ?? DEFAULTS.perSideCount);
   root.querySelector('[data-field="firstSpeakerStance"]').value = initial.firstSpeakerStance ?? DEFAULTS.firstSpeakerStance;
   root.querySelector('[data-field="effortLevel"]').value = initial.effortLevel ?? DEFAULTS.effortLevel;
 
   // 即時校驗
-  for (const field of ['topic', 'proSide', 'perSideCount', 'firstSpeakerStance', 'effortLevel']) {
+  for (const field of ['topic', 'proSide', 'proPersona', 'conPersona', 'perSideCount', 'firstSpeakerStance', 'effortLevel']) {
     const el = root.querySelector(`[data-field="${field}"]`);
     el.addEventListener('input', () => updateValidity(root));
     el.addEventListener('change', () => updateValidity(root));

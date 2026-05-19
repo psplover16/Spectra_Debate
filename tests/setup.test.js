@@ -19,20 +19,24 @@ beforeEach(() => {
 });
 
 describe('Debate Setup Popup Appears Before Each Debate', () => {
-  it('renders popup with 5 fields when no lastFormValues', () => {
+  it('renders popup with 7 fields when no lastFormValues', () => {
     renderSetupPopup(getEl('#app-root'), { onConfirm: () => {} });
     expect(getEl('[data-field="topic"]')).toBeTruthy();
     expect(getEl('[data-field="proSide"]')).toBeTruthy();
+    expect(getEl('[data-field="proPersona"]')).toBeTruthy();
+    expect(getEl('[data-field="conPersona"]')).toBeTruthy();
     expect(getEl('[data-field="perSideCount"]')).toBeTruthy();
     expect(getEl('[data-field="firstSpeakerStance"]')).toBeTruthy();
     expect(getEl('[data-field="effortLevel"]')).toBeTruthy();
     expect(getEl('[data-action="confirm"]')).toBeTruthy();
   });
 
-  it('default values match spec: topic empty, proSide codex, N=3, firstSpeaker pro, effort medium', () => {
+  it('default values match spec: topic empty, proSide codex, N=3, firstSpeaker pro, effort medium, personas empty', () => {
     renderSetupPopup(getEl('#app-root'), { onConfirm: () => {} });
     expect(getEl('[data-field="topic"]').value).toBe('');
     expect(getEl('[data-field="proSide"]').value).toBe('codex');
+    expect(getEl('[data-field="proPersona"]').value).toBe('');
+    expect(getEl('[data-field="conPersona"]').value).toBe('');
     expect(Number(getEl('[data-field="perSideCount"]').value)).toBe(3);
     expect(getEl('[data-field="firstSpeakerStance"]').value).toBe('pro');
     expect(getEl('[data-field="effortLevel"]').value).toBe('medium');
@@ -91,11 +95,13 @@ describe('Form Values Persist Across Sessions', () => {
     expect(getEl('[data-action="confirm"]').disabled).toBe(false);
   });
 
-  it('confirm writes lastFormValues + calls onConfirm with form values', () => {
+  it('confirm writes lastFormValues + calls onConfirm with form values including personas', () => {
     const onConfirm = vi.fn();
     renderSetupPopup(getEl('#app-root'), { onConfirm });
     setValueAndDispatch(getEl('[data-field="topic"]'), '新的辯題');
     setValueAndDispatch(getEl('[data-field="proSide"]'), 'claude');
+    setValueAndDispatch(getEl('[data-field="proPersona"]'), '資深法官');
+    setValueAndDispatch(getEl('[data-field="conPersona"]'), '');
     setValueAndDispatch(getEl('[data-field="perSideCount"]'), '4');
     setValueAndDispatch(getEl('[data-field="firstSpeakerStance"]'), 'con');
     setValueAndDispatch(getEl('[data-field="effortLevel"]'), 'xhigh');
@@ -106,6 +112,8 @@ describe('Form Values Persist Across Sessions', () => {
     expect(onConfirm).toHaveBeenCalledWith({
       topic: '新的辯題',
       proSide: 'claude',
+      proPersona: '資深法官',
+      conPersona: '',
       perSideCount: 4,
       firstSpeakerStance: 'con',
       effortLevel: 'xhigh',
@@ -115,10 +123,28 @@ describe('Form Values Persist Across Sessions', () => {
     expect(stored).toEqual({
       topic: '新的辯題',
       proSide: 'claude',
+      proPersona: '資深法官',
+      conPersona: '',
       perSideCount: 4,
       firstSpeakerStance: 'con',
       effortLevel: 'xhigh',
     });
+  });
+
+  it('legacy lastFormValues without persona restores with empty persona defaults', () => {
+    localStorage.setItem(
+      LAST_FORM_VALUES_KEY,
+      JSON.stringify({
+        topic: '舊辯題',
+        proSide: 'codex',
+        perSideCount: 3,
+        firstSpeakerStance: 'pro',
+        effortLevel: 'low',
+      })
+    );
+    renderSetupPopup(getEl('#app-root'), { onConfirm: () => {} });
+    expect(getEl('[data-field="proPersona"]').value).toBe('');
+    expect(getEl('[data-field="conPersona"]').value).toBe('');
   });
 
   it('does not touch CURRENT_KEY during popup interaction', () => {

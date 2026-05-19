@@ -44,14 +44,15 @@ describe('validateTopic (Topic Validation Enforces Length Bounds)', () => {
   });
 });
 
-describe('validatePerSideCount (Per-Side Turn Count Constrained to 2 Through 5 Inclusive)', () => {
+describe('validatePerSideCount (Per-Side Turn Count Constrained to 2 Through 999 Inclusive)', () => {
   it.each([
     [1, false],
     [2, true],
     [3, true],
     [4, true],
     [5, true],
-    [6, false],
+    [999, true],
+    [1000, false],
     [0, false],
     [-1, false],
   ])('value %d → valid=%s', (value, expected) => {
@@ -64,9 +65,15 @@ describe('validatePerSideCount (Per-Side Turn Count Constrained to 2 Through 5 I
     expect(validatePerSideCount('3').valid).toBe(false);
   });
 
+  it('failure message contains 2~999', () => {
+    const r = validatePerSideCount(1000);
+    expect(r.valid).toBe(false);
+    expect(r.message).toContain('999');
+  });
+
   it('exposes bounds constants', () => {
     expect(PER_SIDE_MIN).toBe(2);
-    expect(PER_SIDE_MAX).toBe(5);
+    expect(PER_SIDE_MAX).toBe(999);
   });
 });
 
@@ -88,7 +95,7 @@ describe('validateSetupForm — 全欄聚合', () => {
   });
 
   it('invalid perSideCount fails', () => {
-    expect(validateSetupForm({ ...goodInput, perSideCount: 7 }).valid).toBe(false);
+    expect(validateSetupForm({ ...goodInput, perSideCount: 1000 }).valid).toBe(false);
   });
 
   it('invalid proSide fails', () => {

@@ -116,6 +116,32 @@ describe('buildPrompt — history (Each Turn Prompt Embeds the Full Prior Debate
   });
 });
 
+describe('buildPrompt — persona (Persona Declaration Injected Into Prompt Header When Assigned)', () => {
+  it('non-empty persona produces 你的身分 line in header', () => {
+    const out = buildPrompt({ ...baseInput, persona: 'Junior 前端工程師' });
+    expect(out).toContain('你的身分：Junior 前端工程師');
+  });
+
+  it('persona line appears after stance line and before turn index line', () => {
+    const out = buildPrompt({ ...baseInput, stance: 'pro', persona: 'Junior 前端工程師', turnIndex: 2, totalTurns: 8 });
+    const stancePos = out.indexOf('你的立場：正方');
+    const personaPos = out.indexOf('你的身分：Junior 前端工程師');
+    const turnPos = out.indexOf('這是第 2 個 turn');
+    expect(stancePos).toBeLessThan(personaPos);
+    expect(personaPos).toBeLessThan(turnPos);
+  });
+
+  it('empty persona produces no 你的身分 line', () => {
+    const out = buildPrompt({ ...baseInput, persona: '' });
+    expect(out).not.toContain('你的身分：');
+  });
+
+  it('omitted persona produces no 你的身分 line', () => {
+    const out = buildPrompt({ ...baseInput });
+    expect(out).not.toContain('你的身分：');
+  });
+});
+
 describe('buildPrompt — failed turn placeholders (Failed Turns Appear in History as Explicit Placeholders)', () => {
   it('renders failed turn as placeholder, not as content', () => {
     const history = [

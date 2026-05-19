@@ -125,4 +125,54 @@ describe('createInitialDebateState', () => {
     });
     expect(s.startedAt).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
   });
+
+  it('proPersona and conPersona stored when provided', () => {
+    const s = createInitialDebateState({
+      topic: 't',
+      proSide: 'codex',
+      perSideCount: 3,
+      firstSpeakerStance: 'pro',
+      effortLevel: 'medium',
+      proPersona: 'Junior 前端工程師',
+      conPersona: '高中生',
+    });
+    expect(s.proPersona).toBe('Junior 前端工程師');
+    expect(s.conPersona).toBe('高中生');
+  });
+
+  it('proPersona and conPersona default to empty string when omitted', () => {
+    const s = createInitialDebateState({
+      topic: 't',
+      proSide: 'codex',
+      perSideCount: 3,
+      firstSpeakerStance: 'pro',
+      effortLevel: 'medium',
+    });
+    expect(s.proPersona).toBe('');
+    expect(s.conPersona).toBe('');
+  });
+
+  it('perSideCount 999 is valid', () => {
+    expect(() =>
+      createInitialDebateState({
+        topic: 't',
+        proSide: 'codex',
+        perSideCount: 999,
+        firstSpeakerStance: 'pro',
+        effortLevel: 'medium',
+      })
+    ).not.toThrow();
+  });
+
+  it('perSideCount 1000 throws', () => {
+    expect(() =>
+      createInitialDebateState({
+        topic: 't',
+        proSide: 'codex',
+        perSideCount: 1000,
+        firstSpeakerStance: 'pro',
+        effortLevel: 'medium',
+      })
+    ).toThrow();
+  });
 });

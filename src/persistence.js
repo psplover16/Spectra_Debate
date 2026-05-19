@@ -3,7 +3,7 @@
 // ----------------------------------------------------------------------------
 // 暴露兩個 keys：
 //   spectra-debate:current          — 當前 / 最後一場 DebateState
-//   spectra-debate:lastFormValues   — 彈窗上次輸入（5 欄）
+//   spectra-debate:lastFormValues   — 彈窗上次輸入（7 欄）
 //
 // 寫入時機由 state machine 控制（每 turn 完成、彈窗 confirm、辯論結束）；本模組僅提供
 // 純粹存取，無內部 throttle / debounce。
@@ -12,7 +12,7 @@
 export const CURRENT_KEY = 'spectra-debate:current';
 export const LAST_FORM_VALUES_KEY = 'spectra-debate:lastFormValues';
 
-const FORM_FIELDS = ['topic', 'proSide', 'perSideCount', 'firstSpeakerStance', 'effortLevel'];
+const FORM_FIELDS = ['topic', 'proSide', 'proPersona', 'conPersona', 'perSideCount', 'firstSpeakerStance', 'effortLevel'];
 
 export function savePersistedState(state) {
   localStorage.setItem(CURRENT_KEY, JSON.stringify(state));
